@@ -1,8 +1,5 @@
 # school-journal
 
-instal MongoDB
-https://www.mongodb.com/
-
 School Journal — учебный проект (React + Node.js + MongoDB).
 
 ---
