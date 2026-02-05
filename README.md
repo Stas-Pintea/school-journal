@@ -50,7 +50,7 @@ npm start
 ### Backend
 
 ```
-cd C:\Users\macstudio\Stas\school-journal\backend
+cd C:\Users\Stas\Downloads\school-journal\backend
 npm install
 npm start
 ```
@@ -58,7 +58,7 @@ npm start
 ### Frontend
 
 ```
-cd C:\Users\macstudio\Stas\school-journal\frontend
+cd C:\Users\Stas\Downloads\school-journal\frontend
 npm install
 npm start
 ```
