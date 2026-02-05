@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Форма с текущим годом</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+  <style>
+    .form-label { font-size: 0.85rem; }
+    .calendar-border { border: 1px solid #dee2e6 !important; }
+    .border-thick-bottom { border-bottom: 3px solid #dee2e6 !important; }
+    .border-thick-right { border-right: 3px solid #dee2e6 !important; }
+    .border-thick-left { border-left: 3px solid #dee2e6 !important; }
+    .border-thick-top { border-top: 3px solid #dee2e6 !important; }
+    .accordion { margin-top: 2rem; z-index: 1; position: relative; }
+    button:focus, button:active, input:focus, input:active, a:focus, a:active {
+      outline: none !important; box-shadow: none !important;
+    }
+    button, input, a {
+      user-select: none; -webkit-tap-highlight-color: transparent;
+    }
+    select { outline: none !important; box-shadow: none !important; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+    select:focus { outline: none !important; box-shadow: none !important; }
+
+    #calendarBody > div {
+      display: flex;
+      gap: 0.5rem;           /* Расстояние между месяцами */
+    }
+
+    #calendarBody table {
+      flex: 1;                /* Каждая таблица занимает одинаковую ширину */
+      min-width: 0;           /* Чтобы корректно сжималась */
+    }
+
+    .calendar-row {
+      display: flex;
+      gap: 1rem; /* Расстояние между месяцами в одной строке */
+    }
+
+
+  </style>
+</head>
+<body class="p-4 bg-light">
+
+<form class="row g-1 align-items-end needs-validation" novalidate>
+  <div class="col-md-3 position-relative">
+    <label for="name" class="form-label fw-bold">Фамилия/Имя</label>
+    <input type="text" class="form-control" id="name" placeholder="Ф.Имя" required>
+    <div class="valid-feedback position-absolute" style="top: 100%; left: 0;">Отлично!</div>
+    <div class="invalid-feedback position-absolute" style="top: 100%; left: 0;">Поле обязательно для заполнения!</div>
+  </div>
+
+  <div class="col-md-2 position-relative">
+    <label class="form-label fw-bold">Учебный год</label>
+    <div class="input-group">
+      <input type="number" class="form-control" id="yearFrom" placeholder="">
+      <span class="input-group-text">—</span>
+      <input type="number" class="form-control" id="yearTo" placeholder="">
+    </div>
+  </div>
+
+  <div class="col-md-2 position-relative">
+    <label for="subject" class="form-label fw-bold">Предмет</label>
+    <select class="form-select" id="subject">
+      <option selected disabled>Не задано</option>
+      <option value="Desen">Desen</option>
+      <option value="Pictura">Pictura</option>
+      <option value="Compoziţie">Compoziţie</option>
+      <option value="Compoziție decorativă">Compoziție decorativă</option>
+      <option value="Istoria artei">Istoria artei</option>
+      <option value="Sculptură">Sculptură</option>
+    </select>
+    <div class="valid-feedback position-absolute" style="top: 100%; left: 0;">Отлично!</div>
+    <div class="invalid-feedback position-absolute" style="top: 100%; left: 0;">Поле обязательно для заполнения!</div>
+  </div>
+
+  <div class="col-md-2 position-relative">
+    <label for="classNumber" class="form-label fw-bold">Класс</label>
+    <select class="form-select" id="classNumber">
+      <option selected disabled>Не задано</option>
+      <option value="1">I «A»</option>
+      <option value="2">II «A»</option>
+      <option value="3">III «A»</option>
+      <option value="4">IV «A»</option>
+      <option value="5">V «A»</option>
+      <option value="1">I «B»</option>
+      <option value="2">II «B»</option>
+      <option value="3">III «B»</option>
+      <option value="4">IV «B»</option>
+      <option value="5">V «B»</option>
+      <option value="1">I «C»</option>
+      <option value="2">II «C»</option>
+      <option value="3">III «C»</option>
+      <option value="4">IV «C»</option>
+      <option value="5">V «C»</option>
+      <option value="1">I «D»</option>
+      <option value="2">II «D»</option>
+      <option value="3">III «D»</option>
+      <option value="4">IV «D»</option>
+      <option value="5">V «D»</option>
+    </select>
+    <div class="valid-feedback position-absolute" style="top: 100%; left: 0;">Отлично!</div>
+    <div class="invalid-feedback position-absolute" style="top: 100%; left: 0;">Поле обязательно для заполнения!</div>
+  </div>
+
+  <div class="col-md-3 position-relative">
+    <label for="lessonsPerWeek" class="form-label fw-bold">Занятий в неделю</label>
+    <input type="number" class="form-control" id="lessonsPerWeek" placeholder="Не задано">
+    <div class="valid-feedback position-absolute" style="top: 100%; left: 0;">Отлично!</div>
+    <div class="invalid-feedback position-absolute" style="top: 100%; left: 0;">Поле обязательно для заполнения!</div>
+  </div>
+</form>
+
+<div class="accordion accordion-flush calendar-border" id="accordionFlushExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="calendar-flush-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#calendar" aria-expanded="false" aria-controls="calendar"><i class="bi bi-calendar-date me-2"></i><span id="calendarTitle">Календарь</span></button>
+    </h2>
+    <div id="calendar" class="accordion-collapse collapse" aria-labelledby="calendar-flush-headingOne" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body" id="calendarBody"></div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-bordered mt-3">
+  <caption>P.Stanislav</caption>
+  <thead>
+    <tr class="border-0">
+      <th class="border-0 text-center" colspan="2"><h4 id="tableTitle"></h4></th>
+      <th class="border-0" colspan="5"><h4 id="profCell"></h4></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="border-thick-top border-thick-left border-thick-right">
+      <td colspan="2" class="border-thick-right">Competenţe</td>
+      <td rowspan="2" class="text-center align-middle">Conţinuturi</td>
+      <td rowspan="2" class="text-center align-middle">№. De ore</td>
+      <td rowspan="2" class="text-center align-middle">Data</td>
+      <td rowspan="2" class="text-center align-middle">Materiale</td>
+      <td rowspan="2" class="text-center align-middle">Format</td>
+    </tr>
+    <tr class="border-thick-bottom border-thick-left border-thick-right">
+      <td>Competenţe specifice</td>
+      <td class="border-thick-right">subcompetenţe</td>
+    </tr>
+    <!-- Semestrul I -->
+    <tr class="border-thick-left border-thick-right text-center fw-bold">
+      <td colspan="7">Semestrul - I</td>
+    </tr>
+    <tr class="border-thick-left border-thick-right">
+      <td>Lucrarea 1</td><td></td><td class="text-center"></td><td class="text-center"><input id="sem1Lucrarea1" type="number" class="form-control form-control-sm border-0 p-0" placeholder="Ore"></td><td class="text-center"></td><td class="text-center"></td><td class="text-center"></td>
+    </tr>
+    <tr class="border-thick-left border-thick-right">
+      <td>Lucrarea 2</td><td></td><td class="text-center"></td><td class="text-center"><input id="sem1Lucrarea2" type="number" class="form-control form-control-sm border-0 p-0" placeholder="Ore"></td><td class="text-center"></td><td class="text-center"></td><td class="text-center"></td>
+    </tr>
+    <tr class="border-thick-left border-thick-right">
+      <td>Lucrarea 3</td><td></td><td class="text-center"></td><td class="text-center"><input id="sem1Lucrarea3" type="number" class="form-control form-control-sm border-0 p-0" placeholder="Ore"></td><td class="text-center"></td><td class="text-center"></td><td class="text-center"></td>
+    </tr>
+    <tr class="border-thick-top border-thick-bottom border-thick-left border-thick-right fw-bold">
+      <td colspan="3">Total ore semestrul I</td>
+      <td colspan="4" id="sem1TotalTime"></td>
+    </tr>
+    <!-- Semestrul II -->
+    <tr class="border-thick-left border-thick-right text-center fw-bold">
+      <td colspan="7">Semestrul - II</td>
+    </tr>
+    <tr class="border-thick-left border-thick-right">
+      <td>Lucrarea 1</td><td></td><td class="text-center"></td><td class="text-center"><input id="sem2Lucrarea1" type="number" class="form-control form-control-sm border-0 p-0" placeholder="Ore"></td><td class="text-center"></td><td class="text-center"></td><td class="text-center"></td>
+    </tr>
+    <tr class="border-thick-left border-thick-right">
+      <td>Lucrarea 2</td><td></td><td class="text-center"></td><td class="text-center"><input id="sem2Lucrarea2" type="number" class="form-control form-control-sm border-0 p-0" placeholder="Ore"></td><td class="text-center"></td><td class="text-center"></td><td class="text-center"></td>
+    </tr>
+    <tr class="border-thick-left border-thick-right">
+      <td>Lucrarea 3</td><td></td><td class="text-center"></td><td class="text-center"><input id="sem2Lucrarea3" type="number" class="form-control form-control-sm border-0 p-0" placeholder="Ore"></td><td class="text-center"></td><td class="text-center"></td><td class="text-center"></td>
+    </tr>
+    <tr class="border-thick-top border-thick-bottom border-thick-left border-thick-right fw-bold">
+      <td colspan="3">Total ore semestrul al II-lea</td>
+      <td colspan="4" id="sem2TotalTime"></td>
+    </tr>
+    <tr class="border-thick-top border-thick-bottom border-thick-left border-thick-right fw-bold">
+      <td colspan="3">În total</td>
+      <td colspan="4" class="text-center" id="totalTime"></td>
+    </tr>
+  </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const currentYear = new Date().getFullYear();
+const yearFromInput = document.getElementById('yearFrom');
+const yearToInput = document.getElementById('yearTo');
+yearFromInput.placeholder = currentYear;
+yearToInput.placeholder = currentYear + 1;
+
+const subjectSelect = document.getElementById('subject');
+const classSelect = document.getElementById('classNumber');
+const nameInput = document.getElementById('name');
+const tableTitle = document.getElementById('tableTitle');
+const profCell = document.getElementById('profCell');
+
+const sem1Inputs = [document.getElementById('sem1Lucrarea1'), document.getElementById('sem1Lucrarea2'), document.getElementById('sem1Lucrarea3')];
+const sem2Inputs = [document.getElementById('sem2Lucrarea1'), document.getElementById('sem2Lucrarea2'), document.getElementById('sem2Lucrarea3')];
+const sem1Total = document.getElementById('sem1TotalTime');
+const sem2Total = document.getElementById('sem2TotalTime');
+const totalTime = document.getElementById('totalTime');
+
+const calendarTitle = document.getElementById('calendarTitle');
+const calendarBody = document.getElementById('calendarBody');
+
+// Праздники Молдовы
+const holidays = [
+  // { month: 0, day: 1, name: "Новый год" },
+  // { month: 0, day: 2, name: "Новый год (выходной)" },
+  // { month: 0, day: 7, name: "Рождество по старому стилю" },
+  // { month: 0, day: 8, name: "Выходной после Рождества" },
+  // { month: 2, day: 8, name: "Международный женский день" },
+  // { month: 3, day: 20, name: "Пасха" },
+  // { month: 3, day: 21, name: "Пасха" },
+  // { month: 3, day: 28, name: "Радуница" },
+  // { month: 4, day: 1, name: "День труда" },
+  // { month: 4, day: 9, name: "День Европы" },
+  // { month: 4, day: 27, name: "День независимости" },
+  // { month: 5, day: 1, name: "День защиты детей" },
+  // { month: 6, day: 3, name: "День работников образования" },
+  // { month: 7, day: 27, name: "День Республики" },
+  // { month: 10, day: 1, name: "День национального единства" },
+  // { month: 11, day: 25, name: "Рождество" },
+  // { month: 11, day: 31, name: "Новый год (канун)" },
+
+  { month: 9, day: 27, name: "Осенние каниеклы" },
+  { month: 9, day: 28, name: "Осенние каниеклы" },
+  { month: 9, day: 29, name: "Осенние каниеклы" },
+  { month: 9, day: 30, name: "Осенние каниеклы" },
+  { month: 9, day: 31, name: "Осенние каниеклы" },
+  { month: 10, day: 1, name: "Осенние каниеклы" },
+
+  { month: 11, day: 25, name: "Зимние каниеклы" },
+  { month: 11, day: 26, name: "Зимние каниеклы" },
+  { month: 11, day: 27, name: "Зимние каниеклы" },
+  { month: 11, day: 28, name: "Зимние каниеклы" },
+  { month: 11, day: 29, name: "Зимние каниеклы" },
+  { month: 11, day: 30, name: "Зимние каниеклы" },
+  { month: 11, day: 31, name: "Зимние каниеклы" },
+  { month: 0, day: 1, name: "Зимние каниеклы" },
+  { month: 0, day: 2, name: "Зимние каниеклы" },
+  { month: 0, day: 3, name: "Зимние каниеклы" },
+  { month: 0, day: 4, name: "Зимние каниеклы" },
+  { month: 0, day: 5, name: "Зимние каниеклы" },
+  { month: 0, day: 6, name: "Зимние каниеклы" },
+  { month: 0, day: 7, name: "Зимние каниеклы" },
+  { month: 0, day: 8, name: "Зимние каниеклы" },
+
+  { month: 2, day: 5, name: "..." },
+  { month: 2, day: 6, name: "..." },
+  { month: 2, day: 7, name: "..." },
+  { month: 2, day: 8, name: "..." },
+
+  { month: 3, day: 12, name: "Весенние каниеклы" },
+  { month: 3, day: 13, name: "Весенние каниеклы" },
+  { month: 3, day: 14, name: "Весенние каниеклы" },
+  { month: 3, day: 15, name: "Весенние каниеклы" },
+  { month: 3, day: 16, name: "Весенние каниеклы" },
+  { month: 3, day: 17, name: "Весенние каниеклы" },
+  { month: 3, day: 18, name: "Весенние каниеклы" },
+  { month: 3, day: 19, name: "Весенние каниеклы" },
+  { month: 3, day: 20, name: "Весенние каниеклы" },
+
+  { month: 4, day: 1, name: "..." },
+  { month: 4, day: 9, name: "..." },
+  { month: 4, day: 22, name: "..." },
+];
+
+function updateCalendarTitle() {
+  const yearFrom = yearFromInput.value || yearFromInput.placeholder;
+  const yearTo = yearToInput.value || yearToInput.placeholder;
+  calendarTitle.textContent = `Календарь 01.09.${yearFrom} - 12.24.${yearFrom}  |  09.01.${yearTo} - 30.05.${yearTo}`;
+}
+
+function generateMonthTable(year, monthIndex) {
+  const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+
+  let table = document.createElement('table');
+  table.className = 'table table-sm table-bordered mb-2 calendar-border';
+  
+  let thead = table.createTHead();
+  let tr = thead.insertRow();
+  let th = document.createElement('th');
+  th.colSpan = 7;
+  th.className = 'text-center bg-light';
+  th.textContent = monthNames[monthIndex] + ' ' + year;
+  tr.appendChild(th);
+
+  let weekDays = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+  tr = table.insertRow();
+  weekDays.forEach(d => {
+    let th = document.createElement('th');
+    th.className = 'text-center';
+    th.textContent = d;
+    tr.appendChild(th);
+  });
+
+  let firstDay = new Date(year, monthIndex, 1).getDay();
+  firstDay = firstDay === 0 ? 7 : firstDay;
+  let row = table.insertRow();
+  
+  for (let i = 1; i < firstDay; i++) row.insertCell();
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    if (row.cells.length === 7) row = table.insertRow();
+    let cell = row.insertCell();
+    cell.className = 'text-center';
+    cell.textContent = d;
+
+    // Проверка на праздник
+    let holiday = holidays.find(h => h.month === monthIndex && h.day === d);
+    if (holiday) {
+      cell.style.backgroundColor = 'red';
+      cell.style.color = 'white';
+      cell.title = holiday.name;
+    } else {
+      // Проверка на воскресенье
+      let dayOfWeek = new Date(year, monthIndex, d).getDay();
+      if (dayOfWeek === 0) { // Воскресенье
+        cell.style.backgroundColor = 'orange';
+        cell.title = 'Выходной';
+      }
+    }
+  }
+
+  // Добавляем пустые ячейки до конца недели, если нужно
+  while (row.cells.length < 7) row.insertCell();
+
+  return table;
+}
+
+function updateCalendarBody() {
+  calendarBody.innerHTML = '';
+
+  const fromYear = parseInt(yearFromInput.value || yearFromInput.placeholder);
+  const toYear = parseInt(yearToInput.value || yearToInput.placeholder);
+
+  const rowDiv = document.createElement('div');
+  rowDiv.style.display = 'flex';
+  rowDiv.style.justifyContent = 'space-between';
+  rowDiv.style.flexWrap = 'nowrap'; // Все 6 месяцев в одну строку
+
+  // Месяцы: Сентябрь, Октябрь, Ноябрь (yearFrom)
+  [8, 9, 10, 11].forEach(m => rowDiv.appendChild(generateMonthTable(fromYear, m)));
+  // Месяцы: Декабрь, Январь, Февраль (yearTo)
+  [0, 1, 2, 3, 4].forEach(m => rowDiv.appendChild(generateMonthTable(toYear, m)));
+
+  calendarBody.appendChild(rowDiv);
+  updateCalendarTitle();
+}
+
+function updateTable() {
+  const subjectText = subjectSelect.options[subjectSelect.selectedIndex]?.text || '';
+  const classText = classSelect.options[classSelect.selectedIndex]?.text || '';
+  tableTitle.textContent = (subjectText && subjectText !== 'Не задано' && classText && classText !== 'Не задано') ? subjectText + ' clasa ' + classText : '';
+  const nameText = nameInput.value.trim();
+  const yearFromText = yearFromInput.value || yearFromInput.placeholder;
+  const yearToText = yearToInput.value || yearToInput.placeholder;
+  profCell.textContent = nameText ? `prof. ${nameText} anul de studii ${yearFromText}-${yearToText}` : '';
+  updateCalendarBody();
+}
+
+function validateField(input) {
+  let isValid = false;
+  if (input.tagName === 'SELECT') isValid = input.value && input.value !== '' && input.value !== 'Не задано';
+  else if (input.type === 'number') isValid = input.value !== '' && !isNaN(input.value);
+  else isValid = input.value.trim() !== '';
+  if (isValid) { input.classList.add('is-valid'); input.classList.remove('is-invalid'); }
+  else { input.classList.add('is-invalid'); input.classList.remove('is-valid'); }
+}
+
+function initValidation() {
+  const inputs = document.querySelectorAll('#name, #subject, #classNumber, #lessonsPerWeek');
+  inputs.forEach(input => {
+    validateField(input);
+    input.addEventListener('input', () => { validateField(input); updateTable(); });
+    input.addEventListener('change', () => { validateField(input); updateTable(); });
+  });
+  updateTable();
+}
+
+function sumInputs(inputs) {
+  return inputs.reduce((sum, input) => {
+    const val = parseFloat(input.value);
+    return sum + (isNaN(val) ? 0 : val);
+  }, 0);
+}
+
+function updateTotals() {
+  const sem1Sum = sumInputs(sem1Inputs);
+  const sem2Sum = sumInputs(sem2Inputs);
+  sem1Total.textContent = sem1Sum + ' Ore';
+  sem2Total.textContent = sem2Sum + ' Ore';
+  totalTime.textContent = (sem1Sum + sem2Sum) + ' Ore';
+}
+
+[...sem1Inputs, ...sem2Inputs].forEach(input => input.addEventListener('input', updateTotals));
+subjectSelect.addEventListener('change', updateTable);
+classSelect.addEventListener('change', updateTable);
+nameInput.addEventListener('input', updateTable);
+yearFromInput.addEventListener('input', updateTable);
+yearToInput.addEventListener('input', updateTable);
+
+document.addEventListener('DOMContentLoaded', () => { initValidation(); updateTotals(); updateCalendarBody(); });
+
+</script>
+</body>
+</html>

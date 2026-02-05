@@ -1,0 +1,195 @@
+/* ===== БАЗОВОЕ (create-react-app) ===== */
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ===== УЧЕБНЫЙ КАЛЕНДАРЬ ===== */
+
+/* Ряд месяцев — всегда в одну строку */
+.ac-row {
+  display: flex;
+  flex-wrap: nowrap;     /* ❗ без переносов */
+  gap: 1rem;
+  overflow-x: auto;      /* на узких экранах — горизонтальный скролл */
+  padding-bottom: 0.25rem;
+}
+
+/* Колонка (карточка месяца) */
+.ac-col {
+  min-width: 0;          /* ❗ важно: позволяет сжиматься */
+}
+
+/* ===== DESKTOP (>= 992px) ===== */
+
+/* 4 месяца в ряд */
+@media (min-width: 992px) {
+  .ac-row-4 .ac-col {
+    flex: 0 1 calc((100% - 3rem) / 4); /* 4 карточки + 3 gap */
+  }
+
+  /* 5 месяцев в ряд */
+  .ac-row-5 .ac-col {
+    flex: 0 1 calc((100% - 4rem) / 5); /* 5 карточек + 4 gap */
+  }
+}
+
+/* ===== TABLET ===== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .ac-row-4 .ac-col,
+  .ac-row-5 .ac-col {
+    flex: 0 0 420px;     /* 1–2 карточки в области видимости */
+  }
+}
+
+/* ===== MOBILE: месяцы друг под другом ===== */
+@media (max-width: 575.98px) {
+  .ac-row {
+    flex-wrap: wrap;     /* ✅ разрешаем перенос */
+    overflow-x: visible; /* ✅ убираем горизонтальный скролл */
+  }
+
+  .ac-row-4 .ac-col,
+  .ac-row-5 .ac-col {
+    flex: 0 0 100%;      /* ✅ каждый месяц на всю ширину */
+  }
+}
+
+/* ===== КАРТОЧКА МЕСЯЦА ===== */
+
+.ac-col .card {
+  min-width: 0;
+}
+
+/* таблица не должна раздувать карточку */
+.ac-col .table-responsive {
+  overflow: hidden;
+}
+
+/* ===== КАЛЕНДАРНАЯ ТАБЛИЦА ===== */
+
+.ac-cal-table {
+  table-layout: fixed;
+}
+
+/* убираем bootstrap padding — экономим место */
+.ac-cal-table th,
+.ac-cal-table td {
+  padding: 0 !important;
+  vertical-align: middle;
+}
+
+/* фикс высоты клетки */
+.ac-cal-table td {
+  height: 42px;
+}
+
+/* заголовки дней недели */
+.ac-cal-table thead th {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ===== ЦИФРА ДНЯ ===== */
+
+.ac-day {
+  white-space: nowrap;  /* ❗ никогда не переносится */
+  line-height: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ===== ЦВЕТА ===== */
+
+/* воскресенье */
+.bg-warning-subtle {
+  background-color: #fff3cd !important;
+}
+
+/* праздник / каникулы */
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* кастомный стиль для заблокированных ячеек журнала */
+.journal-blocked input:disabled {
+  background-color: transparent !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+}
+
+/* ===== Journal: sticky колонки № и Ученик (ТОЛЬКО для журнала) ===== */
+
+.journal-table .sticky-col {
+  position: sticky;
+  background: #fff;
+  z-index: 3;
+}
+
+/* 1-я колонка (№) */
+.journal-table .sticky-col-1 {
+  left: 0;
+  z-index: 4;
+}
+
+/* 2-я колонка (Ученик) */
+.journal-table .sticky-col-2 {
+  left: 60px; /* ширина колонки № */
+  z-index: 3;
+}
+
+/* заголовки поверх тела таблицы */
+.journal-table thead .sticky-col {
+  z-index: 6;
+  background: #fff;
+}
+
+/* ✅ фикс бордера для sticky-колонок */
+.journal-table.table-bordered .sticky-col {
+  border-right: 1px solid var(--bs-border-color) !important;
+  border-left: 1px solid var(--bs-border-color) !important;
+}
+
+/* ✅ главный разделитель после "Ученик" — рисуем поверх */
+.journal-table .sticky-col-2 {
+  box-shadow: 2px 0 0 0 var(--bs-border-color);
+}
+
+/* ✅ крайний левый бордер */
+.journal-table .sticky-col-1 {
+  box-shadow: -1px 0 0 0 var(--bs-border-color);
+}
