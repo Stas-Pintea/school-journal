@@ -17,9 +17,11 @@ https://www.mongodb.com/
 
 ## Project structure
 
+```
 school-journal/
 ├── backend/
 └── frontend/
+```
 
 ---
 
