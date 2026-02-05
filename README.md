@@ -29,15 +29,19 @@ school-journal/
 
 ### Backend
 
+```
 cd /Users/macstudio/Stas/school-journal/backend
 npm install
 npm start
+```
 
 ### Frontend
 
+```
 cd /Users/macstudio/Stas/school-journal/frontend
 npm install
 npm start
+```
 
 ---
 
@@ -45,15 +49,19 @@ npm start
 
 ### Backend
 
+```
 cd C:\Users\macstudio\Stas\school-journal\backend
 npm install
 npm start
+```
 
 ### Frontend
 
+```
 cd C:\Users\macstudio\Stas\school-journal\frontend
 npm install
 npm start
+```
 
 ---
 
