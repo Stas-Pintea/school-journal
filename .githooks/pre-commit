@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+set -e
+
+echo "[pre-commit] Running i18n encoding check..."
+npm --prefix frontend run check:i18n
+
