@@ -68,6 +68,10 @@ npm --prefix frontend run check:i18n
 
 ## На Windows
 
+Установить:
+- `Node.js LTS`
+- `MongoDB Community Server` (или использовать MongoDB Atlas)
+
 Node.js LTS (локально)
 
 1. Откройте PowerShell от обычного пользователя.
