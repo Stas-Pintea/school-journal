@@ -72,7 +72,7 @@ npm --prefix frontend run check:i18n
 - `Node.js LTS`
 - `MongoDB Community Server` (или использовать MongoDB Atlas)
 
-Node.js LTS (локально)
+# Node.js LTS (локально)
 
 1. Откройте PowerShell от обычного пользователя.
 2. Установите через winget:
@@ -80,7 +80,7 @@ Node.js LTS (локально)
 winget install OpenJS.NodeJS.LTS
 ```
 
-MongoDB Community Server (локально)
+# MongoDB Community Server (локально)
 1. Установите через winget:
 ```
 winget install MongoDB.Server
